@@ -5,6 +5,8 @@
     <head>
         <meta name="author" content="20211024">
         <meta name="keywords" content="computer">
+        <script type="text/javascript" src="js\login.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <base href="http://127.0.0.1:5500">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,8 +19,9 @@
             color: white;
             }
         </style>
+        
     </head>
-    <body style="background-color: black;">
+    <body style="background-color: black;" onload="init_logined();">
         <nav class="navbar navbar-expand-lg bg-body-tertiary" class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container-fluid">
               <img src="image/LOGO.png" width="100" height="60" onmouseover="over(this)" onmouseout="out(this)">
