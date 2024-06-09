@@ -1,6 +1,6 @@
 const search_message = () => {
-    const c = '검색을 수행합니다';
-    alert(c);
+    let message = '검색을 수행합니다';
+    alert(message);
 };
 
 document.addEventListener('click', search_message);
@@ -18,3 +18,16 @@ function googleSearch() {
     window.open(googleSearchUrl, "_blank"); // 새로운 창에서 열기.
     return false;
     }
+const search_message2 = () => {
+    const c = '검색을 수행합니까?';
+    alert(c);
+};    
+
+document.addEventListener('click', search_message);
+const search_message3 = () => {
+    const c = '검색을 수행함';
+    alert(c);
+};    
+
+document.addEventListener('click', search_message);
+
