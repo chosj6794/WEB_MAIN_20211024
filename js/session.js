@@ -1,3 +1,15 @@
+function session_set(key, value) {
+  sessionStorage.setItem(key, value);
+}
+
+function session_get(key) {
+  return sessionStorage.getItem(key);
+}
+
+function session_clear() {
+  sessionStorage.clear();
+}
+
 function session_set() {
     let id = document.querySelector("#floatingInput");
     let password = document.querySelector("#floatingPassword");

@@ -108,9 +108,7 @@ const check_input = () => {
     }
 
     loginForm.submit(); // 들여쓰기 수정
-}
-
-
+} 
 function login_failed() {
     let login_fail_cnt = getCookie("login_fail_cnt");
     let login_block_until = getCookie("login_block_until");
@@ -121,7 +119,10 @@ function login_failed() {
         const remainingTime = parseInt(login_block_until) - currentTime;
         const remainingMinutes = Math.floor(remainingTime / (1000 * 60));
         const remainingSeconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-        document.getElementById("login_status").textContent = `로그인이 제한됩니다. (${remainingMinutes}분 ${remainingSeconds}초 후 가능)`;
+        const loginStatusElement = document.getElementById("login_status");
+        if (loginStatusElement) {
+            loginStatusElement.textContent = `로그인이 제한됩니다. (${remainingMinutes}분 ${remainingSeconds}초 후 가능)`;
+        }
         return;
     }
 
@@ -141,40 +142,47 @@ function login_failed() {
         // 1분 동안 로그인 제한
         const blockUntil = new Date().getTime() + (1000 * 60);
         setCookie("login_block_until", blockUntil, 0.0167); // 1분 동안 유효한 쿠키
-        document.getElementById("login_status").textContent = `로그인 제한 상태 (실패 횟수: ${login_fail_cnt})`;
+        const loginStatusElement = document.getElementById("login_status");
+        if (loginStatusElement) {
+            loginStatusElement.textContent = `로그인 제한 상태 (실패 횟수: ${login_fail_cnt})`;
+        }
     } else {
-        document.getElementById("login_status").textContent = `로그인 실패 (실패 횟수: ${login_fail_cnt})`;
+        const loginStatusElement = document.getElementById("login_status");
+        if (loginStatusElement) {
+            loginStatusElement.textContent = `로그인 실패 (실패 횟수: ${login_fail_cnt})`;
+        }
     }
 }
 
 function login_count() {
     let login_cnt = getCookie("login_cnt");
     if (login_cnt) {
-        login_cnt = parseInt(login_cnt) + 1;
+      login_cnt = parseInt(login_cnt) + 1;
     } else {
-        login_cnt = 1;
+      login_cnt = 1;
     }
     setCookie("login_cnt", login_cnt, 1); // 1일 동안 유효한 쿠키
-}
-
-function logout_count() {
+  }
+  
+  function logout_count() {
     let logout_cnt = getCookie("logout_cnt");
     if (logout_cnt) {
-        logout_cnt = parseInt(logout_cnt) + 1;
+      logout_cnt = parseInt(logout_cnt) + 1;
     } else {
-        logout_cnt = 1;
+      logout_cnt = 1;
     }
     setCookie("logout_cnt", logout_cnt, 1); // 1일 동안 유효한 쿠키
-}
-
-document.getElementById("login_btn").addEventListener('click', function() {
+  }
+  
+  document.getElementById("login_btn").addEventListener('click', function() {
     // 로그인 처리 로직
     login_count(); // 로그인 횟수 증가
     check_input(); // 기존 로그인 처리 함수 호출
     login_failed(); // 로그인 실패 처리 함수 호출
-});
+    session_set('user@example.com'); // 세션 생성 (이메일은 예시)
+  });
 
-function init() {
+  function init() {
     const emailInput = document.getElementById('typeEmailX');
     const idsave_check = document.getElementById('idSaveCheck');
   
@@ -185,7 +193,39 @@ function init() {
         idsave_check.checked = true;
       }
       // session_check(); // session_check 함수가 정의되어 있지 않아 주석 처리
-    } 
+    }
+  }
+  // 로그인 성공 시
+function login_success(email) {
+  session_set('user@example.com', new Date().getTime()); // 로그인 시간 저장
 }
 
-window.onload = init;
+// 페이지 접속 시
+function check_login_time() {
+  const loginTime = session_get('login_time');
+  if (loginTime) {
+    const currentTime = new Date().getTime();
+    const elapsedTime = currentTime - loginTime;
+    const maxLoginTime = 5 * 60 * 1000; // 5분
+
+    if (elapsedTime > maxLoginTime) {
+      alert('자동 로그아웃 되었습니다.');
+      logout();
+    }
+  }
+}
+
+// 로그아웃 버튼 클릭 시
+function logout() {
+  session_clear(); // 세션 삭제
+  setCookie('id', '', -1); // 쿠키 삭제
+  window.location.href = '/'; // 로그아웃 페이지로 이동
+}
+
+// 페이지 로드 시 로그인 시간 확인
+window.onload = function() {
+  check_login_time();
+};
+
+  window.onload = init;
+  
