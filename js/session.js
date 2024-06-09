@@ -87,3 +87,16 @@ function session_join_set(){ //세션 저장(객체)    
     alert("세션 스토리지 지원 x");
      }  
     }
+    function session_join_get() {
+      let encryptedSession = sessionStorage.getItem('Session_Storage_new_user_encryted');
+      if (encryptedSession) {
+        let decryptedSession = decrypt_text(encryptedSession);
+        let session = JSON.parse(decryptedSession);
+        
+        // 복호화된 객체 내용 콘솔에 출력
+        console.log(session);
+      } else {
+        console.error("세션 정보를 찾을 수 없습니다.");
+      }
+    }
+    
