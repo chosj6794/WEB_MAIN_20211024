@@ -75,6 +75,28 @@ const check_input = () => {
         alert('패스워드는 대소문자를 1개 이상 포함해야 합니다.');
         return false;
     }
+    if (sanitizedEmail.length > 15) {
+        alert('이메일은 15글자 이하로 입력해야 합니다.');
+        return false;
+    }
+    if (sanitizedEmail.length < 5) {
+        alert('아이디는 5글자 이상 입력해야 합니다.');
+        return false;
+    }
+    // 3글자 이상 반복 입력 제한
+    const emailRegex = /(.)\1{2,}/;
+    if (emailRegex.test(sanitizedEmail)) {
+        alert('아이디에 3글자 이상 반복되는 문자가 있습니다.');
+        return false;
+    }
+
+    // 연속되는 숫자 2개 이상 반복 입력 제한
+    const passwordRegex = /\d{2,}/;
+    if (passwordRegex.test(sanitizedPassword)) {
+        alert('비밀번호에 연속되는 숫자가 2개 이상 있습니다.');
+        return false;
+    }
+
 
     console.log('이메일:', sanitizedEmail);
     console.log('비밀번호:', sanitizedPassword);
